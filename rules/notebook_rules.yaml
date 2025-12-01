@@ -1,0 +1,5 @@
+rules:
+  - id: "nl_high_risk_flag"
+    text: "If amount > 10000 and risk_score > 5 then flag = true"
+  - id: "nl_low_risk_clear"
+    text: "If risk_score <= 2 then flag = false"

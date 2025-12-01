@@ -1,0 +1,60 @@
+# --- Python / środowisko ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+.eggs/
+.build/
+dist/
+build/
+.env
+.env.*
+.venv/
+venv/
+ENV/
+env/
+
+# --- Notebooki Jupyter ---
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+*.nbconvert.ipynb
+
+# --- Logi / dane tymczasowe ---
+logs/
+log/
+*.log
+*.tmp
+tmp/
+temp/
+.data/
+data/tmp/
+.cache/
+.ruff_cache/
+.mldata/
+
+# --- Narzędzia / testy ---
+.pytest_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# --- IDE / edytory ---
+.vscode/
+.idea/
+*.code-workspace
+
+# --- Systemowe ---
+.DS_Store
+Thumbs.db
+
+# --- Inne rzeczy, których zwykle nie chcemy w repo ---
+*.swp
+*.swo
+*.bak
+*.orig

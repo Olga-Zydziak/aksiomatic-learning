@@ -1,0 +1,27 @@
+ruleset_id: "fraud_rules_v1"
+version: "1.0.0"
+description: "Podstawowe reguły fraud / AML"
+
+rules:
+  - id: "fraud.high_amount"
+    text: "IF amount > 10000 THEN is_suspicious = TRUE"
+    description: "Wysoka kwota transakcji"
+    enabled: true
+    severity: "HIGH"
+    tags: ["fraud", "amount"]
+    metadata:
+      author: "analityk_1"
+
+  - id: "fraud.velocity"
+    text: "IF tx_count_24h > 5 THEN is_suspicious = TRUE"
+    description: "Zbyt duża liczba transakcji w 24h"
+    enabled: true
+    severity: "MEDIUM"
+    tags: ["fraud", "velocity"]
+
+  - id: "kyc.pep_block"
+    text: "IF is_pep == TRUE THEN decision = \"BLOCK\""
+    description: "Blokada PEP"
+    enabled: false      # ta reguła będzie pominięta
+    severity: "CRITICAL"
+    tags: ["kyc", "pep"]
