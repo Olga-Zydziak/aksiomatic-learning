@@ -25,3 +25,8 @@ rules:
     enabled: false      # ta reguła będzie pominięta
     severity: "CRITICAL"
     tags: ["kyc", "pep"]
+    
+  - id: fraud.pep_high_risk
+    enabled: true
+    text: "If is_pep == true and amount > 2000 then is_suspicious = true"
+    description: "IF PEP and amount > 2000 THEN is_suspicious = TRUE"

@@ -31,6 +31,9 @@ from nl_rule_parser import (
     RuleParseError,
     build_axiom_from_nl,
     parse_nl_rule,
+    normalize_field_name,
+    normalize_numeric_value,
+    preprocess_natural,
 )
 
 
@@ -241,7 +244,135 @@ def test_nl_parser_demo_with_logger(tmp_path) -> None:
     assert record["decision"]["decision_status"] == "SAT"
     assert record["decision"]["decision"] == "FLAGGED"
 
+def test_normalize_field_name_alias_and_unknown() -> None:
+    """
+    normalize_field_name powinno:
+    - zamienić aliasy (np. "kwota", "flaga") na nazwy kanoniczne,
+    - podnieść RuleParseError dla pól spoza schematu.
+    """
+    schema = _demo_schema()
+    schema_names = [v.name for v in schema]
 
+    # Aliasy działają case-insensitive.
+    assert normalize_field_name("kwota", schema_names) == "amount"
+    assert normalize_field_name("KWOTA", schema_names) == "amount"
+    assert normalize_field_name("flaga", schema_names) == "flag"
+
+    with pytest.raises(RuleParseError):
+        normalize_field_name("nieistniejace_pole", schema_names)
+
+
+def test_normalize_numeric_value_suffix_k_and_m() -> None:
+    """
+    normalize_numeric_value powinno poprawnie obsługiwać sufiksy k/m
+    oraz separator przecinkowy.
+    """
+    # sufiks k
+    assert normalize_numeric_value("10k", "amount") == "10000"
+    assert normalize_numeric_value("10K ", "amount") == "10000"
+
+    # sufiks m
+    assert normalize_numeric_value("1.5m", "amount") == "1500000"
+    assert normalize_numeric_value("1,5M", "amount") == "1500000"
+
+
+def test_preprocess_natural_mappings() -> None:
+    """
+    preprocess_natural powinno mapować skrócone reguły naturalne
+    na wspierany DSL IF ... THEN ....
+    """
+    canonical_high_risk = preprocess_natural(
+        "Flag transactions over 10k with high risk"
+    )
+    assert canonical_high_risk == (
+        "If amount > 10k and risk_score > 7 "
+        "then flag = true"
+    )
+
+    canonical_clear_low = preprocess_natural(
+        "Clear all low-risk transactions"
+    )
+    assert canonical_clear_low == "If risk_score <= 3 then flag = false"
+
+
+def test_build_axiom_from_nl_with_aliases_end_to_end_flagged() -> None:
+    """
+    Reguła używająca aliasów pól ("kwota", "ryzyko", "flaga")
+    powinna zostać znormalizowana i prowadzić do decyzji FLAGGED.
+    """
+    schema = _demo_schema()
+    kernel = AxiomKernel(
+        schema=schema,
+        decision_variable="flag",
+        logger=None,
+        rule_version="nl_test_aliases_v1",
+    )
+
+    rule_text = (
+        "If kwota > 10000 and ryzyko > 5 "
+        "then flaga = true"
+    )
+
+    axiom = build_axiom_from_nl(
+        rule_id="nl_alias_high_risk_flag",
+        text=rule_text,
+        schema=schema,
+        decision_field_fallback="flaga",
+    )
+    kernel.add_axiom(axiom)
+
+    case = {"amount": 15_000, "risk_score": 7}
+    bundle = kernel.evaluate(case)
+
+    assert bundle["decision_status"] == "SAT"
+    assert bundle["decision"] == "FLAGGED"
+    assert bundle["model"]["flag"] is True
+    assert any(
+        ax["id"] == "nl_alias_high_risk_flag"
+        for ax in bundle["satisfied_axioms"]
+    )
+
+
+def test_build_axiom_from_nl_with_preprocessed_natural_rule() -> None:
+    """
+    Reguła w formie naturalnej ("Flag transactions over 10k with "
+    "high risk") powinna zostać zmapowana przez preprocess_natural,
+    poprawnie sparsowana i doprowadzić do decyzji FLAGGED.
+    """
+    schema = _demo_schema()
+    kernel = AxiomKernel(
+        schema=schema,
+        decision_variable="flag",
+        logger=None,
+        rule_version="nl_test_natural_v1",
+    )
+
+    rule_text = "Flag transactions over 10k with high risk"
+
+    axiom = build_axiom_from_nl(
+        rule_id="nl_natural_high_risk_flag",
+        text=rule_text,
+        schema=schema,
+        decision_field_fallback="flag",
+    )
+    kernel.add_axiom(axiom)
+
+    case = {"amount": 20_000, "risk_score": 9}
+    bundle = kernel.evaluate(case)
+
+    assert bundle["decision_status"] == "SAT"
+    assert bundle["decision"] == "FLAGGED"
+    assert bundle["model"]["flag"] is True
+    assert any(
+        ax["id"] == "nl_natural_high_risk_flag"
+        for ax in bundle["satisfied_axioms"]
+    )
+
+    
+    
+    
+    
+    
 if __name__ == "__main__":
     import pytest as _pytest
 

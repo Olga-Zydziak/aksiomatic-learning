@@ -1,0 +1,59 @@
+transaction_id,customer_id,amount,tx_count_24h,is_pep,decision,decision_status,active_rules,explanation_pl
+T001,C001,15000,1,False,FLAGGED,SAT,fraud.high_amount,"Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=15000, is_pep=False, tx_count_24h=1.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.high_amount': IF amount > 10000 THEN is_suspicious = TRUE
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.velocity' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF tx_count_24h > 5 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true"
+T002,C002,500,1,False,CLEAN,SAT,,"Decyzja: transakcja została OZNACZONA jako CZYSTA (CLEAN). Kluczowe dane wejściowe: amount=500, is_pep=False, tx_count_24h=1.
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.velocity' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF tx_count_24h > 5 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true"
+T003,C003,500,10,False,FLAGGED,SAT,fraud.velocity,"Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=500, is_pep=False, tx_count_24h=10.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.velocity': IF tx_count_24h > 5 THEN is_suspicious = TRUE
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true"
+T004,C004,3000,2,True,FLAGGED,SAT,fraud.pep_high_risk,"Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=3000, is_pep=True, tx_count_24h=2.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.pep_high_risk': If is_pep == true and amount > 2000 then is_suspicious = true
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.velocity' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF tx_count_24h > 5 THEN is_suspicious = TRUE"
+T005,C005,20000,8,True,FLAGGED,SAT,"fraud.high_amount,fraud.velocity,fraud.pep_high_risk","Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=20000, is_pep=True, tx_count_24h=8.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.high_amount': IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.velocity': IF tx_count_24h > 5 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk': If is_pep == true and amount > 2000 then is_suspicious = true"
+T006,C006,8000,0,False,CLEAN,SAT,,"Decyzja: transakcja została OZNACZONA jako CZYSTA (CLEAN). Kluczowe dane wejściowe: amount=8000, is_pep=False, tx_count_24h=0.
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.velocity' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF tx_count_24h > 5 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true"
+T007,C007,2500,6,False,FLAGGED,SAT,fraud.velocity,"Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=2500, is_pep=False, tx_count_24h=6.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.velocity': IF tx_count_24h > 5 THEN is_suspicious = TRUE
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true"
+T008,C008,1000,7,True,FLAGGED,SAT,fraud.velocity,"Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=1000, is_pep=True, tx_count_24h=7.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.velocity': IF tx_count_24h > 5 THEN is_suspicious = TRUE
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true"

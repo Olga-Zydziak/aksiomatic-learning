@@ -27,7 +27,6 @@ Wymagania:
     - axiomatic_kernel.py (AxiomDefinition, VariableSchema)
     - z3-solver
 
-Autor: Ty + ChatGPT (axiomatic learning PoC)
 """
 
 from __future__ import annotations

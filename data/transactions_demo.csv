@@ -1,0 +1,9 @@
+transaction_id,customer_id,amount,tx_count_24h,is_pep
+T001,C001,15000,1,False
+T002,C002,500,1,False
+T003,C003,500,10,False
+T004,C004,3000,2,True
+T005,C005,20000,8,True
+T006,C006,8000,0,False
+T007,C007,2500,6,False
+T008,C008,1000,7,True

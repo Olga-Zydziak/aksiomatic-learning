@@ -1,0 +1,127 @@
+=== RAPORT AML – 8 transakcji ===
+
+======================================================================
+📌 Transakcja T001 | Klient: C001
+Kwota: 15000 | Liczba transakcji 24h: 1 | PEP: False (raw: False)
+Decyzja silnika: FLAGGED (status: SAT)
+Aktywne reguły: fraud.high_amount
+
+Uzasadnienie (pełne wyjaśnienie):
+Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=15000, is_pep=False, tx_count_24h=1.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.high_amount': IF amount > 10000 THEN is_suspicious = TRUE
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.velocity' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF tx_count_24h > 5 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true
+
+======================================================================
+📌 Transakcja T002 | Klient: C002
+Kwota: 500 | Liczba transakcji 24h: 1 | PEP: False (raw: False)
+Decyzja silnika: CLEAN (status: SAT)
+Aktywne reguły: brak – żadna reguła nie została uruchomiona (case CLEAN).
+
+Uzasadnienie (pełne wyjaśnienie):
+Decyzja: transakcja została OZNACZONA jako CZYSTA (CLEAN). Kluczowe dane wejściowe: amount=500, is_pep=False, tx_count_24h=1.
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.velocity' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF tx_count_24h > 5 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true
+
+======================================================================
+📌 Transakcja T003 | Klient: C003
+Kwota: 500 | Liczba transakcji 24h: 10 | PEP: False (raw: False)
+Decyzja silnika: FLAGGED (status: SAT)
+Aktywne reguły: fraud.velocity
+
+Uzasadnienie (pełne wyjaśnienie):
+Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=500, is_pep=False, tx_count_24h=10.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.velocity': IF tx_count_24h > 5 THEN is_suspicious = TRUE
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true
+
+======================================================================
+📌 Transakcja T004 | Klient: C004
+Kwota: 3000 | Liczba transakcji 24h: 2 | PEP: True (raw: True)
+Decyzja silnika: FLAGGED (status: SAT)
+Aktywne reguły: fraud.pep_high_risk
+
+Uzasadnienie (pełne wyjaśnienie):
+Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=3000, is_pep=True, tx_count_24h=2.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.pep_high_risk': If is_pep == true and amount > 2000 then is_suspicious = true
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.velocity' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF tx_count_24h > 5 THEN is_suspicious = TRUE
+
+======================================================================
+📌 Transakcja T005 | Klient: C005
+Kwota: 20000 | Liczba transakcji 24h: 8 | PEP: True (raw: True)
+Decyzja silnika: FLAGGED (status: SAT)
+Aktywne reguły: fraud.high_amount,fraud.velocity,fraud.pep_high_risk
+
+Uzasadnienie (pełne wyjaśnienie):
+Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=20000, is_pep=True, tx_count_24h=8.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.high_amount': IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.velocity': IF tx_count_24h > 5 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk': If is_pep == true and amount > 2000 then is_suspicious = true
+
+======================================================================
+📌 Transakcja T006 | Klient: C006
+Kwota: 8000 | Liczba transakcji 24h: 0 | PEP: False (raw: False)
+Decyzja silnika: CLEAN (status: SAT)
+Aktywne reguły: brak – żadna reguła nie została uruchomiona (case CLEAN).
+
+Uzasadnienie (pełne wyjaśnienie):
+Decyzja: transakcja została OZNACZONA jako CZYSTA (CLEAN). Kluczowe dane wejściowe: amount=8000, is_pep=False, tx_count_24h=0.
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.velocity' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF tx_count_24h > 5 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true
+
+======================================================================
+📌 Transakcja T007 | Klient: C007
+Kwota: 2500 | Liczba transakcji 24h: 6 | PEP: False (raw: False)
+Decyzja silnika: FLAGGED (status: SAT)
+Aktywne reguły: fraud.velocity
+
+Uzasadnienie (pełne wyjaśnienie):
+Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=2500, is_pep=False, tx_count_24h=6.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.velocity': IF tx_count_24h > 5 THEN is_suspicious = TRUE
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true
+
+======================================================================
+📌 Transakcja T008 | Klient: C008
+Kwota: 1000 | Liczba transakcji 24h: 7 | PEP: True (raw: True)
+Decyzja silnika: FLAGGED (status: SAT)
+Aktywne reguły: fraud.velocity
+
+Uzasadnienie (pełne wyjaśnienie):
+Decyzja: transakcja została OFLAGOWANA (FLAGGED). Kluczowe dane wejściowe: amount=1000, is_pep=True, tx_count_24h=7.
+
+Powody (aktywne reguły):
+- Reguła 'fraud.velocity': IF tx_count_24h > 5 THEN is_suspicious = TRUE
+
+Reguły, które nie zadziałały w tym przypadku:
+- Reguła 'fraud.high_amount' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: IF amount > 10000 THEN is_suspicious = TRUE
+- Reguła 'fraud.pep_high_risk' była spełniona logicznie, ale jej warunek nie dotyczył tego przypadku: If is_pep == true and amount > 2000 then is_suspicious = true
+
+
+======================================================================
+🏁 Koniec raportu AML.
