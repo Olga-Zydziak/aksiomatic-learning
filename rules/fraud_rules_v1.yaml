@@ -19,14 +19,15 @@ rules:
     severity: "MEDIUM"
     tags: ["fraud", "velocity"]
 
-  - id: "kyc.pep_block"
-    text: "IF is_pep == TRUE THEN decision = \"BLOCK\""
-    description: "Blokada PEP"
-    enabled: false      # ta reguła będzie pominięta
+  - id: "fraud.ultra_high_amount_extreme_velocity"
+    description: "IF amount > 1000000 AND tx_count_24h > 100 THEN is_suspicious = TRUE"
+    text: "IF amount > 1000000 AND tx_count_24h > 100 THEN is_suspicious = TRUE"
+    enabled: true
     severity: "CRITICAL"
-    tags: ["kyc", "pep"]
+    tags: ["amount", "velocity"]
     
-  - id: fraud.pep_high_risk
+  - id: "fraud.pep_high_risk"
     enabled: true
     text: "If is_pep == true and amount > 2000 then is_suspicious = true"
     description: "IF PEP and amount > 2000 THEN is_suspicious = TRUE"
+    tags: ["pep", "amount"]
