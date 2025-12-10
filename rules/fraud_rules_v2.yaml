@@ -1,0 +1,144 @@
+ruleset_id: fraud_rules_v2
+version: 1.1.0
+description: Podstawowe reguły fraud / AML Extended with promoted candidates from
+  Rule Gaps.
+rules:
+- id: fraud.high_amount
+  text: IF amount > 10000 THEN is_suspicious = TRUE
+  description: Wysoka kwota transakcji
+  enabled: true
+  severity: HIGH
+  tags:
+  - fraud
+  - amount
+  metadata:
+    author: analityk_1
+- id: fraud.velocity
+  text: IF tx_count_24h > 5 THEN is_suspicious = TRUE
+  description: Zbyt duża liczba transakcji w 24h
+  enabled: true
+  severity: MEDIUM
+  tags:
+  - fraud
+  - velocity
+  metadata: {}
+- id: fraud.ultra_high_amount_extreme_velocity
+  text: IF amount > 1000000 AND tx_count_24h > 100 THEN is_suspicious = TRUE
+  description: IF amount > 1000000 AND tx_count_24h > 100 THEN is_suspicious = TRUE
+  enabled: true
+  severity: CRITICAL
+  tags:
+  - amount
+  - velocity
+  metadata: {}
+- id: fraud.pep_high_risk
+  text: If is_pep == true and amount > 2000 then is_suspicious = true
+  description: IF PEP and amount > 2000 THEN is_suspicious = TRUE
+  enabled: true
+  severity: null
+  tags:
+  - pep
+  - amount
+  metadata: {}
+- id: fraud.candidate_gap.001
+  text: IF amount >= 20000 AND amount < 100000 AND tx_count_24h >= 2 AND tx_count_24h
+    <= 5 AND is_pep == FALSE THEN is_suspicious = TRUE
+  description: 'Kandydat reguły dla segmentu: amount=[20k, 100k), tx_count_24h=2–5,
+    non-PEP (automatycznie wygenerowany na podstawie Rule Gaps).'
+  enabled: true
+  severity: MEDIUM
+  tags:
+  - candidate_from_gap
+  - experimental
+  - segment:amount=[20k, 100k), tx_count_24h=2–5, non-PEP
+  metadata:
+    source: candidate_rule_engine
+    segment:
+      amount_band: '[20k, 100k)'
+      tx_band: 2–5
+      is_pep: false
+      label: amount=[20k, 100k), tx_count_24h=2–5, non-PEP
+    metrics:
+      total_cases: 208
+      triggered_total: 28
+      triggered_flagged: 28
+      triggered_clean: 0
+      triggered_other: 0
+      segment_total: 28
+      segment_flagged: 28
+      segment_clean: 0
+      segment_flagged_rate: 1.0
+      triggered_share: 0.1346153846153846
+      clean_to_flagged_ratio: 0.0
+    proof:
+      is_conflict_free: true
+      conflict_count: 0
+      conflict_details: []
+- id: fraud.candidate_gap.002
+  text: IF amount >= 1000 AND amount < 5000 AND tx_count_24h >= 6 AND tx_count_24h
+    <= 10 AND is_pep == FALSE THEN is_suspicious = TRUE
+  description: 'Kandydat reguły dla segmentu: amount=[1k, 5k), tx_count_24h=6–10,
+    non-PEP (automatycznie wygenerowany na podstawie Rule Gaps).'
+  enabled: true
+  severity: MEDIUM
+  tags:
+  - candidate_from_gap
+  - experimental
+  - segment:amount=[1k, 5k), tx_count_24h=6–10, non-PEP
+  metadata:
+    source: candidate_rule_engine
+    segment:
+      amount_band: '[1k, 5k)'
+      tx_band: 6–10
+      is_pep: false
+      label: amount=[1k, 5k), tx_count_24h=6–10, non-PEP
+    metrics:
+      total_cases: 208
+      triggered_total: 24
+      triggered_flagged: 24
+      triggered_clean: 0
+      triggered_other: 0
+      segment_total: 24
+      segment_flagged: 24
+      segment_clean: 0
+      segment_flagged_rate: 1.0
+      triggered_share: 0.11538461538461539
+      clean_to_flagged_ratio: 0.0
+    proof:
+      is_conflict_free: true
+      conflict_count: 0
+      conflict_details: []
+- id: fraud.candidate_gap.003
+  text: IF amount >= 1000 AND amount < 5000 AND tx_count_24h >= 11 AND tx_count_24h
+    <= 20 AND is_pep == FALSE THEN is_suspicious = TRUE
+  description: 'Kandydat reguły dla segmentu: amount=[1k, 5k), tx_count_24h=11–20,
+    non-PEP (automatycznie wygenerowany na podstawie Rule Gaps).'
+  enabled: true
+  severity: MEDIUM
+  tags:
+  - candidate_from_gap
+  - experimental
+  - segment:amount=[1k, 5k), tx_count_24h=11–20, non-PEP
+  metadata:
+    source: candidate_rule_engine
+    segment:
+      amount_band: '[1k, 5k)'
+      tx_band: 11–20
+      is_pep: false
+      label: amount=[1k, 5k), tx_count_24h=11–20, non-PEP
+    metrics:
+      total_cases: 208
+      triggered_total: 21
+      triggered_flagged: 21
+      triggered_clean: 0
+      triggered_other: 0
+      segment_total: 21
+      segment_flagged: 21
+      segment_clean: 0
+      segment_flagged_rate: 1.0
+      triggered_share: 0.10096153846153846
+      clean_to_flagged_ratio: 0.0
+    proof:
+      is_conflict_free: true
+      conflict_count: 0
+      conflict_details: []

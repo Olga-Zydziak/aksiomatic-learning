@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Optional
 
 import csv
+from decision_constants import OUTCOME_CLEAN, OUTCOME_FLAGGED
 
 
 @dataclass(frozen=True)
@@ -48,11 +49,11 @@ class SegmentStats:
         """Aktualizuje statystyki na podstawie pojedynczego rekordu CSV."""
         self.total += 1
 
-        decision_upper = decision.upper()
-        if decision_upper == "FLAGGED":
+        decision_normalized = decision.strip().upper()
+        if decision_normalized == OUTCOME_FLAGGED:
             self.flagged += 1
             target = self.rule_counts_flagged
-        elif decision_upper == "CLEAN":
+        elif decision_normalized == OUTCOME_CLEAN:
             self.clean += 1
             target = self.rule_counts_clean
         else:

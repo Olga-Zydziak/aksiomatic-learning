@@ -1,0 +1,67 @@
+ruleset_id: "aml_rules_v1"
+version: "1.0.0"
+description: "Reguły AML dopasowane do syntetycznego generatora aml_data_generator"
+
+rules:
+  - id: "aml.high_amount_core"
+    text: "IF amount >= 15000 THEN is_suspicious = TRUE"
+    description: "Wysokie kwoty pojedynczych transakcji (scenariusz high_amount)."
+    enabled: true
+    severity: "HIGH"
+    tags: ["aml", "amount", "high_amount"]
+    metadata:
+      scenario: "high_amount"
+
+  - id: "aml.velocity_24h_core"
+    text: "IF tx_count_24h >= 10 THEN is_suspicious = TRUE"
+    description: "Duża liczba transakcji w ciągu 24h (scenariusz velocity / structuring)."
+    enabled: true
+    severity: "HIGH"
+    tags: ["aml", "velocity", "tx_24h"]
+    metadata:
+      scenario: "velocity"
+
+  - id: "aml.velocity_7d_heavy"
+    text: "IF tx_count_7d >= 50 AND total_amount_7d > 50000 THEN is_suspicious = TRUE"
+    description: "Bardzo intensywna aktywność w 7 dni (wysoka liczba i łączna kwota)."
+    enabled: true
+    severity: "HIGH"
+    tags: ["aml", "velocity", "tx_7d", "high_amount"]
+    metadata:
+      scenario: "velocity"
+
+  - id: "aml.pep_high_risk_amount"
+    text: "IF is_pep == TRUE AND amount >= 2000 THEN is_suspicious = TRUE"
+    description: "Transakcje PEP powyżej progu kwotowego (scenariusz pep_high_risk)."
+    enabled: true
+    severity: "HIGH"
+    tags: ["aml", "pep", "amount"]
+    metadata:
+      scenario: "pep_high_risk"
+
+  - id: "aml.structuring_cash_like"
+    text: "IF amount < 2000 AND tx_count_24h >= 10 AND total_amount_24h >= 15000 THEN is_suspicious = TRUE"
+    description: "Wiele małych transakcji w 24h o łącznej kwocie blisko progu (structuring)."
+    enabled: true
+    severity: "HIGH"
+    tags: ["aml", "structuring", "velocity", "amount"]
+    metadata:
+      scenario: "structuring"
+
+  - id: "aml.model_score_very_high"
+    text: "IF model_risk_score >= 0.9 THEN is_suspicious = TRUE"
+    description: "Alert na podstawie wysokiego wyniku modelu ryzyka."
+    enabled: true
+    severity: "HIGH"
+    tags: ["aml", "model", "score"]
+    metadata:
+      scenario: "model"
+
+  - id: "aml.sanctions_match"
+    text: "IF on_sanctions_list == TRUE THEN is_suspicious = TRUE"
+    description: "Trafienie na liście sankcyjnej – zawsze podejrzane."
+    enabled: true
+    severity: "CRITICAL"
+    tags: ["aml", "sanctions"]
+    metadata:
+      scenario: "sanctions"

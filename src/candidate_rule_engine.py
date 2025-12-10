@@ -10,6 +10,7 @@ from axiomatic_kernel import AxiomKernel, AxiomConflict, VariableSchema
 from nl_rule_parser import build_axiom_from_nl, RuleParseError
 from rules_io import load_ruleset_from_file, apply_ruleset_to_kernel
 from rule_gaps import GapSegmentInsight, RuleGapsResult, SegmentKey
+from decision_constants import OUTCOME_CLEAN, OUTCOME_FLAGGED
 
 
 @dataclass

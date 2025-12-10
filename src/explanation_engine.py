@@ -18,7 +18,18 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Literal, Optional
 
-from axiomatic_kernel import DecisionStatus, DecisionOutcome  # type: ignore[import]
+from decision_constants import (
+    DecisionOutcome,
+    DecisionStatus,
+    OUTCOME_CLEAN,
+    OUTCOME_FLAGGED,
+    OUTCOME_ERROR,
+    STATUS_ERROR,
+    STATUS_SAT,
+    STATUS_UNSAT,
+    STATUS_UNKNOWN,
+)
+
 
 
 LanguageCode = Literal["pl", "en"]
@@ -183,7 +194,6 @@ class DecisionExplainer:
     # ------------------------------------------------------------------ #
     # Prywatne: budowa poszczególnych sekcji wyjaśnienia
     # ------------------------------------------------------------------ #
-
     def _build_headline(
         self,
         status: DecisionStatus,
@@ -196,41 +206,47 @@ class DecisionExplainer:
         fact_summary = self._summarize_facts(facts)
 
         if lang == "pl":
-            if status == "SAT":
-                if decision == "FLAGGED":
+            if status == STATUS_SAT:
+                if decision == OUTCOME_FLAGGED:
                     base = "Decyzja: transakcja została OFLAGOWANA (FLAGGED)."
-                elif decision == "CLEAN":
-                    base = "Decyzja: transakcja została OZNACZONA jako CZYSTA (CLEAN)."
+                elif decision == OUTCOME_CLEAN:
+                    base = (
+                        "Decyzja: transakcja została OZNACZONA jako "
+                        "CZYSTA (CLEAN)."
+                    )
                 else:
-                    base = f"Decyzja: {decision} (status SAT)."
-            elif status == "UNSAT":
+                    base = f"Decyzja: {decision} (status {STATUS_SAT})."
+            elif status == STATUS_UNSAT:
                 base = (
                     "Decyzja niemożliwa: zestaw reguł jest SPRZECZNY "
                     "dla tego przypadku (UNSAT)."
                 )
-            elif status == "ERROR":
+            elif status == STATUS_ERROR:
                 base = "Wystąpił błąd podczas ewaluacji reguł."
             else:
-                base = f"Status decyzyjny NIEJEDNOZNACZNY (status={status})."
+                base = (
+                    "Status decyzyjny NIEJEDNOZNACZNY "
+                    f"(status={status})."
+                )
 
             if fact_summary:
                 base += f" Kluczowe dane wejściowe: {fact_summary}."
             return base
 
         # EN
-        if status == "SAT":
-            if decision == "FLAGGED":
+        if status == STATUS_SAT:
+            if decision == OUTCOME_FLAGGED:
                 base = "Decision: transaction has been FLAGGED."
-            elif decision == "CLEAN":
+            elif decision == OUTCOME_CLEAN:
                 base = "Decision: transaction has been marked as CLEAN."
             else:
-                base = f"Decision: {decision} (status SAT)."
-        elif status == "UNSAT":
+                base = f"Decision: {decision} (status {STATUS_SAT})."
+        elif status == STATUS_UNSAT:
             base = (
                 "Decision impossible: rule set is CONTRADICTORY "
                 "for this case (UNSAT)."
             )
-        elif status == "ERROR":
+        elif status == STATUS_ERROR:
             base = "An error occurred during rule evaluation."
         else:
             base = f"Decision status is UNKNOWN (status={status})."
@@ -238,6 +254,8 @@ class DecisionExplainer:
         if fact_summary:
             base += f" Key input facts: {fact_summary}."
         return base
+
+   
 
     def _summarize_facts(self, facts: Dict[str, Any]) -> str:
         """

@@ -48,6 +48,12 @@ from rules_io import RuleSet, load_ruleset_from_file
 
 logger = logging.getLogger(__name__)
 
+from decision_constants import (
+    OUTCOME_UNKNOWN,
+    STATUS_ERROR,
+    STATUS_UNSAT,
+    STATUS_UNKNOWN,
+)
 
 # ---------------------------------------------------------------------------
 # Modele danych
@@ -309,8 +315,8 @@ class RuleAnalyticsEngine:
         for record in reader.iter_decisions():
             bundle = record.bundle
 
-            decision = str(bundle.get("decision", "UNKNOWN"))
-            status = str(bundle.get("decision_status", "UNKNOWN"))
+            decision = str(bundle.get("decision", OUTCOME_UNKNOWN))
+            status = str(bundle.get("decision_status", STATUS_UNKNOWN))
             rule_version = str(bundle.get("rule_version", "unknown"))
 
             outcome_stats.total_decisions += 1
@@ -324,9 +330,9 @@ class RuleAnalyticsEngine:
                 outcome_stats.by_rule_version.get(rule_version, 0) + 1
             )
 
-            if status == "UNSAT":
+            if status == STATUS_UNSAT:
                 outcome_stats.unsat_cases += 1
-            if status in {"ERROR", "UNKNOWN"}:
+            if status in {STATUS_ERROR, STATUS_UNKNOWN}:
                 outcome_stats.error_cases += 1
 
             # Zbierz reguły występujące w tej decyzji, aby móc policzyć
